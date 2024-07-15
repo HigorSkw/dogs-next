@@ -31,6 +31,20 @@ export function USER_POST() {
   };
 }
 
+// Exemplo utilizando os options
+// export function USER_POST(body) {
+//   return {
+//     url: API_URL + '/api/user',
+//     options: {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(body),
+//     },
+//   };
+// }
+
 export function PHOTO_POST() {
   return {
     url: API_URL + '/api/photo',
