@@ -1,24 +1,36 @@
 'use server';
 
+import { TOKEN_POST } from '@/functions/api';
+import apiError from '@/functions/api.error';
 import { cookies } from 'next/headers';
 
-export default async function loginAction(formData: FormData) {
+export default async function loginAction(state: {}, formData: FormData) {
   const username = formData.get('username') as string | null;
   const password = formData.get('password') as string | null;
 
-  const respose = await fetch('/jwt-auth/v1/token', {
-    method: 'POST',
-    body: JSON.stringify(formData),
-  });
+  try {
+    if (!username || !password) throw new Error('Preencha os dados');
 
-  const data = await respose.json();
+    const { url } = TOKEN_POST();
 
-  cookies().set('token', data.token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24,
-  });
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
 
-  return data;
+    if (!response.ok) throw new Error('Senha ou usuário inválidos');
+
+    const data = await response.json();
+
+    cookies().set('token', data.token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24,
+    });
+
+    return { data: null, ok: true, error: '' };
+  } catch (error: unknown) {
+    return apiError(error);
+  }
 }
