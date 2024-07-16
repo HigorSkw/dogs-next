@@ -17,7 +17,7 @@ export default async function ContaPage() {
     <>
       <section>
         {data?.length ? (
-          <Feed photos={data} />
+          <Feed photos={data} user={user?.username} />
         ) : (
           <p style={{ color: '#444', fontSize: '1.25rem', marginBottom: '1rem' }}>Nenhuma foto encontrada</p>
         )}
