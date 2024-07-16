@@ -1,5 +1,8 @@
 'use server';
 
+import { PHOTOS_GET } from '@/functions/api';
+import apiError from '@/functions/api.error';
+
 export type Photo = {
   id: number;
   author: string;
@@ -12,10 +15,24 @@ export type Photo = {
   total_comments: string;
 };
 
-export default async function PhotosGet() {
-  const response = await fetch('https://dogsapi.origamid.dev/json/api/photo/?_page=1&_total=6&_user=0');
+type PhotosGetParams = {
+  page?: number;
+  total?: number;
+  user?: 0 | string;
+};
 
-  const data = (await response.json()) as Photo[];
+export default async function PhotosGet({ page = 1, total = 6, user = 0 }: PhotosGetParams = {}, optionsFront?: RequestInit) {
+  const options = optionsFront || {
+    next: { revalidate: 10, tags: ['photos'] },
+  };
+  try {
+    const { url } = PHOTOS_GET({ page, total, user });
+    const response = await fetch(url, options);
 
-  return data;
+    const data = (await response.json()) as Photo[];
+    if (!response.ok) throw new Error('Erro ao buscar as fotos.');
+    return { data, ok: true, error: '' };
+  } catch (error) {
+    return apiError(error);
+  }
 }
