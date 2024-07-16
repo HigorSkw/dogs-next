@@ -1,10 +1,10 @@
 'use server';
 
-import { PHOTOS_GET, PHOTO_GET } from '@/functions/api';
+import { PHOTO_GET } from '@/functions/api';
 import apiError from '@/functions/api.error';
 import { Photo } from './photos-get';
 
-type IComment = {
+export type IComment = {
   comment_ID: string;
   comment_post_ID: string;
   comment_author: string;
