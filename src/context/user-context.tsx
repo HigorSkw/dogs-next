@@ -1,6 +1,8 @@
 'use client';
 
-import { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
+import logoutAction from '@/actions/logout';
+import validateToken from '@/actions/validate-token';
+import { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 type IUser = {
   id: number;
@@ -26,5 +28,15 @@ export const useUser = () => {
 
 export function UserContextProvider({ children, user }: { children: ReactNode; user: IUser | null }) {
   const [userState, setUserState] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    async function validate() {
+      const { ok } = await validateToken();
+      if (!ok) await logoutAction();
+    }
+
+    if (userState) validate();
+  }, [userState]);
+
   return <UserContext.Provider value={{ user: userState, setUserState }}></UserContext.Provider>;
 }

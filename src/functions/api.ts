@@ -10,12 +10,6 @@ export function TOKEN_POST() {
 export function TOKEN_VALIDATE_POST(token) {
   return {
     url: API_URL + '/jwt-auth/v1/token/validate',
-    options: {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    },
   };
 }
 
@@ -60,10 +54,6 @@ export function PHOTOS_GET({ page, total, user }: { page: number; total: number;
 export function PHOTO_GET(id) {
   return {
     url: `${API_URL}/api/photo/${id}`,
-    options: {
-      method: 'GET',
-      cache: 'no-store',
-    },
   };
 }
 
@@ -76,12 +66,6 @@ export function COMMENT_POST(id: string) {
 export function PHOTO_DELETE(id) {
   return {
     url: `${API_URL}/api/photo/${id}`,
-    options: {
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Bearer ' + window.localStorage.getItem('token'),
-      },
-    },
   };
 }
 
@@ -100,11 +84,5 @@ export function PASSWORD_RESET() {
 export function STATS_GET() {
   return {
     url: API_URL + '/api/stats',
-    options: {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + window.localStorage.getItem('token'),
-      },
-    },
   };
 }
