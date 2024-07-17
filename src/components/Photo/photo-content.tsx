@@ -7,7 +7,7 @@ import PhotoDelete from './photo-delete';
 import Link from 'next/link';
 import { useUser } from '@/context/user-context';
 import Image from 'next/image';
-import { PhotoData } from '@/actions/photo.get';
+import { PhotoData } from '@/actions/photo-get';
 
 const PhotoContent = ({ data, single }: { data: PhotoData; single: boolean }) => {
   const { user } = useUser();

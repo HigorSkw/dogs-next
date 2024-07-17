@@ -1,10 +1,10 @@
 import ContaHeader from '@/components/Conta/conta-header';
 
-export default function ContaLayout({ children }: { children: React.ReactNode }) {
+export default async function ContaLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="container">
       <ContaHeader />
-      <h1>Menu</h1>
+      {children}
     </div>
   );
 }

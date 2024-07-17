@@ -1,4 +1,4 @@
-import { ContaPhotoPost } from '@/components/Conta/conta-photo';
+import ContaPhotoPost from '@/components/Conta/conta-photo';
 import { Metadata } from 'next';
 
 export const runtime = 'edge';
@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function PostarPage() {
-  return (
-    <section>
-      <ContaPhotoPost />
-    </section>
-  );
+  return <ContaPhotoPost />;
 }

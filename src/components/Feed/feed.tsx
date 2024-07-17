@@ -1,54 +1,39 @@
 'use client';
 
-import PhotosGet, { Photo } from '@/actions/photos-get';
+import photosGet, { Photo } from '@/actions/photos-get';
 import FeedPhotos from './feed-photos';
-import { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import Loading from '@/components/Helper/loading';
 import styles from './feed.module.css';
 
 export default function Feed({ photos, user }: { photos: Photo[]; user?: 0 | string }) {
-  const [photosFeed, setPhotosFeed] = useState<Photo[]>(photos);
-  const [loading, setLoading] = useState(false);
-  const [infinite, setInfinite] = useState(photos.length < 6 ? false : true);
+  const [photosFeed, setPhotosFeed] = React.useState<Photo[]>(photos);
+  const [page, setPage] = React.useState(1);
+  const [loading, setLoading] = React.useState(false);
+  const [infinite, setInfinite] = React.useState(photos.length < 6 ? false : true);
 
-  const [page, setPage] = useState(1);
-
-  const fectching = useRef(false);
-  function infiteScroll() {
-    if (fectching.current) return;
-    fectching.current = true;
+  const fetching = React.useRef(false);
+  function infiniteScroll() {
+    console.log('aconteceu');
+    if (fetching.current) return;
+    fetching.current = true;
     setLoading(true);
     setTimeout(() => {
       setPage((currentPage) => currentPage + 1);
-      fectching.current = false;
+      fetching.current = false;
       setLoading(false);
     }, 1000);
   }
 
-  useEffect(() => {
-    if (infinite) {
-      window.addEventListener('scroll', infiteScroll);
-      window.addEventListener('wheel', infiteScroll);
-    } else {
-      window.removeEventListener('scroll', infiteScroll);
-      window.removeEventListener('wheel', infiteScroll);
-    }
-    return () => {
-      window.removeEventListener('scroll', infiteScroll);
-      window.removeEventListener('wheel', infiteScroll);
-    };
-  }, [infinite]);
-
-  useEffect(() => {
-    if (page == 1) return;
+  React.useEffect(() => {
+    if (page === 1) return;
     async function getPagePhotos(page: number) {
-      const actionData = await PhotosGet(
+      const actionData = await photosGet(
         { page, total: 6, user: 0 },
         {
           cache: 'no-store',
         },
       );
-
       if (actionData && actionData.data !== null) {
         const { data } = actionData;
         setPhotosFeed((currentPhotos) => [...currentPhotos, ...data]);
@@ -56,13 +41,26 @@ export default function Feed({ photos, user }: { photos: Photo[]; user?: 0 | str
       }
     }
     getPagePhotos(page);
-    console.log({ page });
   }, [page]);
+
+  React.useEffect(() => {
+    if (infinite) {
+      window.addEventListener('scroll', infiniteScroll);
+      window.addEventListener('wheel', infiniteScroll);
+    } else {
+      window.removeEventListener('scroll', infiniteScroll);
+      window.removeEventListener('wheel', infiniteScroll);
+    }
+    return () => {
+      window.removeEventListener('scroll', infiniteScroll);
+      window.removeEventListener('wheel', infiniteScroll);
+    };
+  }, [infinite]);
 
   return (
     <div>
       <FeedPhotos photos={photosFeed} />
-      {infinite ? <div className={styles.loadingWrapper}>{loading && <Loading />}</div> : <p> Não existe mais postagem</p>}
+      <div className={styles.loadingWrapper}>{infinite ? loading && <Loading /> : <p>Não existem mais postagens.</p>}</div>
     </div>
   );
 }

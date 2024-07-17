@@ -14,10 +14,7 @@ function FormButton() {
   return <>{pending ? <Button disabled={pending}>Enviando...</Button> : <Button>Enviar Email</Button>}</>;
 }
 
-// Primeira Solução
-// export const dynamic = 'force-dynamic';
-
-export const LoginPerdeuForm = () => {
+export default function LoginPerdeuForm() {
   const [state, action] = useFormState(passwordLost, {
     ok: false,
     error: '',
@@ -31,13 +28,11 @@ export const LoginPerdeuForm = () => {
   }, []);
 
   return (
-    <>
-      <form action={action} className={styles.form}>
-        <Input label="Email / Usuário" type="text" name="login" />
-        <input type="hidden" value={url} name="url" />
-        <ErrorMessage error={state.error} />
-        {state.ok ? <p style={{ color: '#4c1' }}>Email Enviado!</p> : <FormButton />}
-      </form>
-    </>
+    <form action={action} className={styles.form}>
+      <Input label="Email / Usuário" name="login" type="text" />
+      <input type="hidden" name="url" value={url} />
+      <ErrorMessage error={state.error} />
+      {state.ok ? <p style={{ color: '#4c1' }}>Email enviado.</p> : <FormButton />}
+    </form>
   );
-};
+}

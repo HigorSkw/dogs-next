@@ -1,16 +1,17 @@
-import { IComment } from '@/actions/photo.get';
+'use client';
+
 import { useFormState, useFormStatus } from 'react-dom';
-import styles from './photo-comments.form.module.css';
+import styles from './photo-comments-form.module.css';
 import EnviarIcon from '@/icons/enviar-icon';
 import ErrorMessage from '../Helper/error-message';
-import commentPost from '@/actions/comments-post';
-import { useEffect, useState } from 'react';
+import { Comment } from '@/actions/photo-get';
+import commentPost from '@/actions/comment-post';
+import React from 'react';
 
 function FormButton() {
   const { pending } = useFormStatus();
-
   return (
-    <button type="submit" disabled={pending} className={styles.button}>
+    <button type="submit" className={styles.button} disabled={pending}>
       <EnviarIcon />
     </button>
   );
@@ -23,7 +24,7 @@ export default function PhotoCommentsForm({
 }: {
   single: boolean;
   id: number;
-  setComments: React.Dispatch<React.SetStateAction<IComment[]>>;
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }) {
   const [state, action] = useFormState(commentPost, {
     ok: false,
@@ -31,14 +32,14 @@ export default function PhotoCommentsForm({
     error: '',
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (state.ok && state.data) {
       setComments((comments) => [...comments, state.data]);
       setComment('');
     }
   }, [state, setComments]);
 
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = React.useState('');
 
   return (
     <form action={action} className={`${styles.form} ${single ? styles.single : ''}`}>
@@ -50,7 +51,6 @@ export default function PhotoCommentsForm({
         placeholder="Comente..."
         value={comment}
         onChange={({ target }) => setComment(target.value)}></textarea>
-      <h1>Alguma coisa</h1>
       <FormButton />
       <ErrorMessage error={state.error} />
     </form>

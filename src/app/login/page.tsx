@@ -1,4 +1,4 @@
-import { LoginForm } from '@/components/Login/login-form';
+import LoginForm from '@/components/Login/login-form';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default async function LoginPage() {
   return (
     <section className="animeLeft">
-      <h1 className="title">Login Page</h1>
+      <h1 className="title">Login</h1>
       <LoginForm />
     </section>
   );
