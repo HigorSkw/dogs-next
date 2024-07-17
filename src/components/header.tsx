@@ -6,8 +6,6 @@ import userGet from '@/actions/user-get';
 export default async function Header() {
   const { data } = await userGet();
 
-  const user = true;
-
   return (
     <header className={styles.header}>
       <nav className={`${styles.nav} container`}>

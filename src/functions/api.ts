@@ -1,4 +1,3 @@
-// @ts-nocheck
 export const API_URL = 'https://dogsapi.origamid.dev/json';
 
 export function TOKEN_POST() {
@@ -7,7 +6,7 @@ export function TOKEN_POST() {
   };
 }
 
-export function TOKEN_VALIDATE_POST(token) {
+export function TOKEN_VALIDATE_POST() {
   return {
     url: API_URL + '/jwt-auth/v1/token/validate',
   };
@@ -25,20 +24,6 @@ export function USER_POST() {
   };
 }
 
-// Exemplo utilizando os options
-// export function USER_POST(body) {
-//   return {
-//     url: API_URL + '/api/user',
-//     options: {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(body),
-//     },
-//   };
-// }
-
 export function PHOTO_POST() {
   return {
     url: API_URL + '/api/photo',
@@ -51,7 +36,7 @@ export function PHOTOS_GET({ page, total, user }: { page: number; total: number;
   };
 }
 
-export function PHOTO_GET(id) {
+export function PHOTO_GET(id: string) {
   return {
     url: `${API_URL}/api/photo/${id}`,
   };
@@ -63,7 +48,7 @@ export function COMMENT_POST(id: string) {
   };
 }
 
-export function PHOTO_DELETE(id) {
+export function PHOTO_DELETE(id: string) {
   return {
     url: `${API_URL}/api/photo/${id}`,
   };

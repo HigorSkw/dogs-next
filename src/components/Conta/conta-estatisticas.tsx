@@ -3,15 +3,15 @@
 import React from 'react';
 import styles from './conta-estatisticas.module.css';
 import { VictoryPie, VictoryChart, VictoryBar } from 'victory';
-import { IStatsData } from '@/actions/stats-get';
+import { StatsData } from '@/actions/stats-get';
 
-type IGraphData = {
+type GraphData = {
   x: string;
   y: number;
 };
 
-export default function ContaEstatisticas({ data }: { data: IStatsData[] }) {
-  const [graph, setGraph] = React.useState<IGraphData[]>([]);
+export default function ContaEstatisticas({ data }: { data: StatsData[] }) {
+  const [graph, setGraph] = React.useState<GraphData[]>([]);
   const [total, setTotal] = React.useState(0);
 
   React.useEffect(() => {

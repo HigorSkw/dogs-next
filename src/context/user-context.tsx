@@ -1,10 +1,10 @@
 'use client';
 
-import logoutAction from '@/actions/logout';
+import logout from '@/actions/logout';
 import validateToken from '@/actions/validate-token';
-import { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
+import React from 'react';
 
-type IUser = {
+type User = {
   id: number;
   nome: string;
   username: string;
@@ -12,31 +12,30 @@ type IUser = {
 };
 
 type IUserContext = {
-  user: IUser | null;
-  setUserState: Dispatch<SetStateAction<IUser | null>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-const UserContext = createContext<IUserContext | null>(null);
+const UserContext = React.createContext<IUserContext | null>(null);
 
 export const useUser = () => {
-  const context = useContext(UserContext);
-  if (context == null) {
-    throw new Error('useContenxt deve estar dentro do Provider');
+  const context = React.useContext(UserContext);
+  if (context === null) {
+    throw new Error('useContext deve estar dentro do Provider');
   }
   return context;
 };
 
-export function UserContextProvider({ children, user }: { children: ReactNode; user: IUser | null }) {
-  const [userState, setUserState] = useState<IUser | null>(null);
+export function UserContextProvider({ children, user }: { children: React.ReactNode; user: User | null }) {
+  const [userState, setUser] = React.useState<User | null>(user);
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function validate() {
       const { ok } = await validateToken();
-      if (!ok) await logoutAction();
+      if (!ok) await logout();
     }
-
     if (userState) validate();
   }, [userState]);
 
-  return <UserContext.Provider value={{ user: userState, setUserState }}></UserContext.Provider>;
+  return <UserContext.Provider value={{ user: userState, setUser }}>{children}</UserContext.Provider>;
 }

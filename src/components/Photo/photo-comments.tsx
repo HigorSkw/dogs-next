@@ -1,11 +1,12 @@
 'use client';
+
 import React from 'react';
 import PhotoCommentsForm from './photo-comments-form';
-import styles from './photo-commments.module.css';
+import styles from './photo-comments.module.css';
 import { useUser } from '@/context/user-context';
-import { IComment } from '@/actions/photo.get';
+import { Comment } from '@/actions/photo-get';
 
-const PhotoComments = (props: { single: boolean; id: number; comments: IComment[] }) => {
+const PhotoComments = (props: { single: boolean; id: number; comments: Comment[] }) => {
   const [comments, setComments] = React.useState(() => props.comments);
   const commentsSection = React.useRef<HTMLUListElement>(null);
   const { user } = useUser();
